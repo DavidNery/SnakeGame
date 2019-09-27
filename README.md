@@ -4,4 +4,4 @@
 - [x] Moviment
 - [x] Controls
 - [x] Eat fruit
-- [ ] Check colisions
+- [x] Check colisions

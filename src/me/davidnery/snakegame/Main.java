@@ -20,10 +20,12 @@ public class Main extends JFrame {
 		
 		add(new GamePanel(600, 500));
 		
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
+		
+		pack();
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		setSize(600, 500);
 		setLocationRelativeTo(null);
 		
 	}
