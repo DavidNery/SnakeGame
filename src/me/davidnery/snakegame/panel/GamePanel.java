@@ -33,7 +33,9 @@ public class GamePanel extends JPanel {
 
 	private final Thread THREAD;
 
-	private boolean run, textDisplayed;
+	private boolean textDisplayed;
+
+	private int time;
 
 	public GamePanel(int width, int height) {
 		WIDTH = width;
@@ -48,18 +50,14 @@ public class GamePanel extends JPanel {
 
 		SCONTROLLER = new SnakeController(WIDTH, HEIGHT, RANDOM);
 
-		run = true;
 		textDisplayed = true;
 		THREAD = new Thread(() -> {
-
-			int time;
-
-			while(run) {
+			while(true) {
 
 				if(snake != null && !snake.isDead()) {
 					SCONTROLLER.updatePositions(snake);
-					SCONTROLLER.checkEat(snake, fruit);
-					time = 100;
+					if(SCONTROLLER.checkEat(snake, fruit))
+						if(time > 20) time -= 2;
 				}else {
 					time = 600;
 				}
@@ -80,6 +78,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void startGame() {
+		time = 100;
+
 		int x = RANDOM.nextInt(WIDTH/10)*10, y = RANDOM.nextInt(HEIGHT/10)*10;
 		EMovement movementDirection = EMovement.values()[RANDOM.nextInt(EMovement.values().length)];
 		if(x == 0 && movementDirection == EMovement.WEST)
@@ -108,7 +108,7 @@ public class GamePanel extends JPanel {
 			if(!checkGameOver(g2d)) {
 				drawSnake(g2d);
 				drawFruit(g2d);
-				drawScore(g2d);
+				drawScoreAndSpeed(g2d);
 			}else {
 				if(textDisplayed) {
 					g2d.setFont(new Font("Verdana", Font.BOLD, 50));
@@ -158,10 +158,12 @@ public class GamePanel extends JPanel {
 		g2d.fillRect(fruit.getX(), fruit.getY(), 10, 10);
 	}
 
-	public void drawScore(Graphics2D g2d) {
+	public void drawScoreAndSpeed(Graphics2D g2d) {
 		g2d.setColor(Color.blue);
 
 		g2d.drawString("Score: " + snake.getPoints().size(), 10, 20);
+		int speed = 100%time;
+		g2d.drawString("Speed: " + (speed == 0 ? 1 : speed/2), 10, 35);
 	}
 
 	private boolean checkGameOver(Graphics2D g2d) {

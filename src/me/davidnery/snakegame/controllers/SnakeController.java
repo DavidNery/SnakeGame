@@ -44,7 +44,7 @@ public class SnakeController {
 		}
 	}
 	
-	public void checkEat(Snake snake, Fruit fruit) {
+	public boolean checkEat(Snake snake, Fruit fruit) {
 		Point head = snake.getPoints().get(0);
 		if(head.getX() == fruit.getX() && head.getY() == fruit.getY()) {
 			fruit.setX(RANDOM.nextInt(WINDOWWIDTH/10)*10);
@@ -65,7 +65,11 @@ public class SnakeController {
 				snake.addPoint(p.x - 10, p.y);
 				break;
 			}
+			
+			return true;
 		}
+		
+		return false;
 	}
 
 }
